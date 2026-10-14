@@ -8,15 +8,15 @@ manifest:
       url-base: https://github.com/HeeTuic
     - name: zettaface
       url-base: https://github.com/zettaface
-    - name: anhuar-ma
-      url-base: https://github.com/anhuar-ma
+    - name: im-archi
+      url-base: https://github.com/im-archi
   projects:
     # - name: zmk
     #   remote: zmkfirmware
     #   revision: ac7f75b8591d39aaf3b66b9d26f26c9ed921a009
     #   import: app/west.yml
     - name: zmk
-      remote: anhuar-ma
+      remote: im-archi
       revision: v0.3-branch
       import: app/west.yml
     - name: cb-zmk-keebs

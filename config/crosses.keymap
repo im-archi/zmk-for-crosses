@@ -1,3 +1,24 @@
+/*
+ * Crosses 54 — ZMK keymap (synchronized with eyelash_sofle / kanata.kbd)
+ *
+ * Layers:
+ *   0 = BASE    Colemak-DH + HRMs + top-row hold-arrows
+ *   1 = NAV     Navigation / numpad / clipboard shortcuts
+ *   2 = SYM     Symbols (+ pos 0 toggles QWERTY)
+ *   3 = QWERTY  QWERTY alpha layer (toggle via SYM, pos 0)
+ *   4 = FN      Function / media / BT / RGB / system (tri-layer NAV+SYM)
+ *   5 = EXT     Extended / special keys (toggle via FN, &to EXT)
+ *
+ * Home-row & top-row holds (BASE Colemak-DH):
+ *   L (mods):   A=Ctrl  R=Alt  S=GUI  T=Shift (hsl)   G=ESC (hla)
+ *   R (arrows): L=UP    U=DOWN  Y=LEFT  ;=RIGHT (top row)
+ *   R (mods):   M=ESC   N=Shift (hsr)  E=GUI (hmr)  I=Alt (hmr)  O=Ctrl (hmr) (home row)
+ *
+ * Home-row holds (QWERTY):
+ *   L (mods):   A=Ctrl  S=Alt  D=GUI  F=Shift (hsl)   G=ESC (hla)
+ *   R (arrows): H=UP    J=DOWN  K=LEFT  L=RIGHT  ;=Shift (hsr)
+ */
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
@@ -7,9 +28,9 @@
 #include <input/processors.dtsi>
 
 #define BASE   0
-#define QWERTY 1
-#define NAV    2
-#define SYM    3
+#define NAV    1
+#define SYM    2
+#define QWERTY 3
 #define FN     4
 #define EXT    5
 
@@ -42,6 +63,7 @@
     };
 
     behaviors {
+        /* Home-row mods (left hand) — Ctrl / Alt / GUI only (A / R / S). */
         hml: home_row_mod_left {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -51,16 +73,19 @@
             require-prior-idle-ms = <150>;
             bindings = <&sk>, <&kp>;
             hold-trigger-key-positions = <
-                6  7  8  9  10 11 
-                18 19 20 21 22 23 
-                30 31 32 33 34 35 
-                42 43 44 45 46 47 
+                /* Full right hand */
+                6  7  8  9  10 11
+                18 19 20 21 22 23
+                30 31 32 33 34 35
+                42 43 44 45 46 47
                 51 52 53
+                /* Other left-hand HRM keys — chord together */
                 25 26 27 28
             >;
             hold-trigger-on-release;
         };
 
+        /* Left-hand SHIFT (T on Colemak, F on QWERTY) */
         hsl: home_shift_left {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -70,17 +95,42 @@
             require-prior-idle-ms = <0>;
             bindings = <&sk>, <&kp>;
             hold-trigger-key-positions = <
-                6  7  8  9  10 11 
-                18 19 20 21 22 23 
-                30 31 32 33 34 35 
-                42 43 44 45 46 47 
+                /* Full right hand */
+                6  7  8  9  10 11
+                18 19 20 21 22 23
+                30 31 32 33 34 35
+                42 43 44 45 46 47
                 51 52 53
+                /* Other left-hand HRM keys — chord together */
                 25 26 27 28
             >;
             hold-trigger-on-release;
         };
 
+        /* Right-hand mods (E=GUI, I=Alt, O=Ctrl on Colemak). */
         hmr: home_row_mod_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&sk>, <&kp>;
+            hold-trigger-key-positions = <
+                /* Full left hand */
+                0  1  2  3  4  5
+                12 13 14 15 16 17
+                24 25 26 27 28 29
+                36 37 38 39 40 41
+                48 49 50
+                /* Other right-hand HRM keys — chord together */
+                31 32 33 34
+            >;
+            hold-trigger-on-release;
+        };
+
+        /* Right-hand SHIFT (N on Colemak, ; on QWERTY). */
+        hsr: home_shift_right {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
@@ -89,15 +139,19 @@
             require-prior-idle-ms = <0>;
             bindings = <&sk>, <&kp>;
             hold-trigger-key-positions = <
+                /* Full left hand */
                 0  1  2  3  4  5
                 12 13 14 15 16 17
                 24 25 26 27 28 29
                 36 37 38 39 40 41
                 48 49 50
+                /* Other right-hand HRM keys — chord together */
+                31 32 33 34
             >;
             hold-trigger-on-release;
         };
 
+        /* Right-hand hold-arrows (top row Colemak, home row QWERTY) & hold-ESC (M) */
         hra: home_row_arrow {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -116,6 +170,7 @@
             hold-trigger-on-release;
         };
 
+        /* Left-hand hold-arrow (G=ESC) */
         hla: home_left_arrow {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -125,10 +180,10 @@
             require-prior-idle-ms = <0>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <
-                6  7  8  9  10 11 
-                18 19 20 21 22 23 
-                30 31 32 33 34 35 
-                42 43 44 45 46 47 
+                6  7  8  9  10 11
+                18 19 20 21 22 23
+                30 31 32 33 34 35
+                42 43 44 45 46 47
                 51 52 53
             >;
             hold-trigger-on-release;
@@ -175,50 +230,69 @@
     keymap {
         compatible = "zmk,keymap";
 
+        /* ==================================================================
+         * LAYER 0 — BASE (Colemak-DH)
+         * ================================================================== */
         base_layer {
             display-name = "BASE";
             bindings = <
 &kp ESC        &kp N1         &kp N2         &kp N3        &kp N4              &kp N5            &kp N6              &kp N7         &kp N8        &kp N9         &kp N0            &cw_caps CAPS 0
-&kp TAB        &kp Q          &kp W          &kp F         &kp P               &kp B             &kp J               &kp L          &kp U         &kp Y          &kp SEMI          &kp BSLH
-&kp BACKSPACE  &hml LCTRL A   &hml LALT R   &hml LGUI S   &hsl LSHFT T         &hla ESC G        &hra UP M           &hra DOWN N    &hra LEFT E   &hra RIGHT I   &hmr RSHFT O      &kp APOS
+&kp TAB        &kp Q          &kp W          &kp F         &kp P               &kp B             &kp J               &hra UP L      &hra DOWN U   &hra LEFT Y    &hra RIGHT SEMI   &kp BSLH
+&kp BACKSPACE  &hml LCTRL A   &hml LALT R    &hml LGUI S   &hsl LSHFT T        &hla ESC G        &hra ESC M          &hsr RSHFT N   &hmr RGUI E   &hmr RALT I    &hmr RCTRL O      &kp APOS
 &sk LSHFT      &kp X          &kp C          &kp D         &kp V               &kp Z             &kp K               &kp H          &kp COMMA     &kp DOT        &kp FSLH          &sk RSHFT
-                                            &kp_slh SYM ENTER &kp LGUI        &ltq NAV NAV       &kp_slh NAV SPACE   &kp RALT             &lt_thumb SYM SPACE
+                                             &kp_slh SYM ENTER &kp LGUI        &ltq NAV NAV      &kp_slh NAV SPACE   &lt_thumb SYM TAB &kp DEL
             >;
         };
 
-        qwerty_layer {
-            display-name = "QWERTY";
-            bindings = <
-&kp ESC    &kp N1         &kp N2        &kp N3         &kp N4              &kp N5            &kp N6              &kp N7         &kp N8        &kp N9         &kp N0            &cw_caps CAPS 0
-&kp TAB    &kp Q          &kp W         &kp E          &kp R               &kp T             &kp Y               &kp U          &kp I         &kp O          &kp P             &kp BSLH
-&kp BACKSPACE  &hml LCTRL A   &hml LALT S   &hml LGUI D   &hsl LSHFT F  &hla ESC G        &hra UP H          &hra DOWN J      &hra LEFT K   &hra RIGHT L    &hmr RSHFT SEMI   &kp APOS
-&sk LSHFT  &kp Z          &kp X         &kp C          &kp V               &kp B             &kp N               &kp M          &kp COMMA     &kp DOT        &kp FSLH          &sk RSHFT
-                                        &kp_slh SYM ENTER &kp LGUI         &ltq SYM SYM      &kp_slh NAV SPACE   &kp RALT              &lt_thumb SYM SPACE
-            >;
-        };
-
+        /* ==================================================================
+         * LAYER 1 — NAV
+         *   - Left hand: Numpad (1-9), mouse clicks (L/M/R), Cut/Copy
+         *   - Right hand: PgUp/PgDn, mods (Shift/GUI/Alt/Ctrl), Return, +, *
+         * ================================================================== */
         nav_layer {
             display-name = "NAV";
             bindings = <
-&trans     &kp F1      &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7     &kp F8     &kp F9     &kp F10     &kp F11
-&trans     &kp ESC     &mkp LCLK   &mkp MCLK   &mkp RCLK   &mkp MB4    &kp PG_UP   &kp N7     &kp N8     &kp N9     &kp MINUS   &kp F12
-&trans     LMODS                                           &mkp MB5    &kp N4     &kp N5     &kp N6     &kp PLUS    &kp EQUAL
-&trans     EDIT                                                        &kp N1     &kp N2     &kp N3     &kp ASTRK   &kp ENTER
-                                   &trans      &trans      &trans      &trans     &kp DOT    &kp N0
+&kp F12     &kp F1      &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp F11
+&trans      &kp N1      &kp N2      &kp N3      &mkp LCLK   &mkp MCLK   &mkp RCLK   &kp PG_UP   &kp PG_DN   &trans      &kp MINUS   &kp ASTRK
+&trans      &kp N4      &kp N5      &kp N6      &kp N0      &trans      &trans      &kp RSHFT   &kp RGUI    &kp RALT    &kp RCTRL   &kp PLUS
+&trans      &kp N7      &kp N8      &kp N9      &trans      &kp LC(C)   &kp LC(D)   &kp ENTER   &trans      &trans      &trans      &trans
+                                    &kp LC(X)   &trans      &trans      &trans      &kp DOT     &kp COMMA
             >;
         };
 
+        /* ==================================================================
+         * LAYER 2 — SYM
+         *   Top-left (pos 0) toggles QWERTY (mirrors kanata @tog_qw).
+         *   Symbol layout mirrors kanata.kbd / sofle.
+         * ================================================================== */
         sym_layer {
             display-name = "SYM";
             bindings = <
-&trans     &kp N1      &kp N2      &kp N3      &kp N4      &kp N5      &kp N6       &kp N7       &kp N8       &kp N9       &kp N0       &trans
-&kp TILDE  &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT   &kp CARET    &kp AMPS     &kp ASTRK    &kp LPAR     &kp RPAR     &kp COLON
-&kp GRAVE  LMODS                                           &kp DQT     &kp PLUS     &kp EQUAL    &kp LBRC     &kp RBRC     &kp MINUS    &kp SEMI
-&trans     &kp UNDER   &kp LT      &tog QWERTY &kp GT      &kp BSLH    &kp SLASH    &kp QMARK    &kp LBKT     &kp RBKT     &kp UNDER    &trans
-                                   &trans      &trans      &trans      &trans       &trans       &trans
+&tog QWERTY &kp N1      &kp N2      &kp N3      &kp N4      &kp N5      &kp N6       &kp N7       &kp N8       &kp N9       &kp N0       &trans
+&trans      &kp AT      &kp HASH    &kp PIPE    &kp TILDE   &kp GRAVE   &kp PLUS     &kp LBRC     &kp RBRC     &kp APOS     &kp DQT      &trans
+&trans      &kp EXCL    &kp PRCNT   &kp CARET   &kp DLLR    &kp AMPS    &kp MINUS    &kp LPAR     &kp RPAR     &kp EQUAL    &kp UNDER    &trans
+&trans      &kp UNDER   &kp LT      &kp GT      &kp QMARK   &kp BSLH    &kp ASTRK    &kp LBKT     &kp RBKT     &kp FSLH     &kp BSLH     &trans
+                                    &trans      &trans      &trans      &trans       &trans       &trans
             >;
         };
 
+        /* ==================================================================
+         * LAYER 3 — QWERTY (toggle via SYM pos 0)
+         * ================================================================== */
+        qwerty_layer {
+            display-name = "QWERTY";
+            bindings = <
+&kp ESC        &kp N1         &kp N2        &kp N3         &kp N4              &kp N5            &kp N6              &kp N7         &kp N8        &kp N9         &kp N0            &cw_caps CAPS 0
+&kp TAB        &kp Q          &kp W         &kp E          &kp R               &kp T             &kp Y               &kp U          &kp I         &kp O          &kp P             &kp BSLH
+&kp BACKSPACE  &hml LCTRL A   &hml LALT S   &hml LGUI D    &hsl LSHFT F        &hla ESC G        &hra UP H           &hra DOWN J    &hra LEFT K   &hra RIGHT L   &hsr RSHFT SEMI   &kp APOS
+&sk LSHFT      &kp Z          &kp X         &kp C          &kp V               &kp B             &kp N               &kp M          &kp COMMA     &kp DOT        &kp FSLH          &sk RSHFT
+                                            &kp_slh SYM ENTER &kp LGUI         &ltq SYM SYM      &kp_slh NAV SPACE   &lt_thumb SYM TAB &kp DEL
+            >;
+        };
+
+        /* ==================================================================
+         * LAYER 4 — FN / Media / System / BT (tri-layer NAV+SYM)
+         * ================================================================== */
         fn_layer {
             display-name = "FN/SYS";
             bindings = <
@@ -230,13 +304,16 @@
             >;
         };
 
+        /* ==================================================================
+         * LAYER 5 — EXT / Special keys (toggle in FN via &to EXT)
+         * ================================================================== */
         ext_layer {
             display-name = "EXT";
             bindings = <
 &to BASE   &kp PSCRN     &kp SLCK      &kp PAUSE_BREAK  &kp KP_NUM    &trans          &kp INS       &kp HOME      &kp PG_UP     &trans        &trans        &trans
 &trans     &kp F11       &kp F12       &kp K_APP        &kp CAPS      &trans          &kp DEL       &kp END       &kp PG_DN     &trans        &trans        &trans
 &trans     LMODS                                                      &trans          &kp LEFT      &kp DOWN      &kp UP        &kp RIGHT     &trans        &trans
-&trans     EDIT                                                                       &kp K_FIND    &kp C_AL_LOCK &trans        &trans        &trans        &trans
+&trans     EDIT                                                                       &kp K_FIND    &kp C_AL_LOCK &trans        &trans        &trans        &to BASE
                                        &to BASE         &trans        &trans          &to BASE      &trans        &trans
             >;
         };
