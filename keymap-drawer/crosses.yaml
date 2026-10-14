@@ -49,11 +49,11 @@ layers:
   - .
   - /
   - {t: '$$mdi:apple-keyboard-shift$$', h: '$$mdi:gesture-tap-hold$$'}
-  - {t: ENTER, h: SYM}
   - LGUI
+  - {t: ENTER, h: SYM}
   - {t: NAV, h: NAV}
-  - {t: '$$mdi:keyboard-space$$', h: NAV}
   - {t: '$$mdi:keyboard-tab$$', h: SYM}
+  - {t: '$$mdi:keyboard-space$$', h: NAV}
   - DEL
   NAV:
   - F12
@@ -107,8 +107,8 @@ layers:
   - Ctl+X
   - {t: '$$mdi:transfer$$', type: trans}
   - {type: held}
-  - {type: held alternate}
-  - .
+  - {t: '$$mdi:transfer$$', type: trans}
+  - {t: ., type: held alternate}
   - ','
   SYM:
   - {t: QWERTY, h: toggle}
@@ -159,11 +159,11 @@ layers:
   - /
   - \
   - {t: '$$mdi:transfer$$', type: trans}
+  - {t: '$$mdi:transfer$$', type: trans}
   - {type: held}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
   - {type: held alternate}
+  - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   QWERTY:
   - $$mdi:keyboard-esc$$
@@ -214,11 +214,11 @@ layers:
   - .
   - /
   - {t: '$$mdi:apple-keyboard-shift$$', h: '$$mdi:gesture-tap-hold$$'}
-  - {t: ENTER, h: SYM}
   - LGUI
+  - {t: ENTER, h: SYM}
   - {t: SYM, h: SYM}
-  - {t: '$$mdi:keyboard-space$$', h: NAV}
   - {t: '$$mdi:keyboard-tab$$', h: SYM}
+  - {t: '$$mdi:keyboard-space$$', h: NAV}
   - DEL
   FN/SYS:
   - $$mdi:bluetooth-off$$
@@ -269,8 +269,8 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {type: held}
   - {t: '$$mdi:transfer$$', type: trans}
+  - {type: held}
   - {type: held}
   - {type: held}
   - {type: held}
