@@ -353,7 +353,7 @@
 };
 
 &trackball_central_listener {
-    input-processors = <&zip_xy_scaler 17 20>, <&zip_ble_report_rate_limit>;
+    input-processors = <&zip_xy_scaler 18 20>, <&zip_ble_report_rate_limit>;
 };
 #endif
 
