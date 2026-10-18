@@ -1,6 +1,10 @@
 #include <dt-bindings/zmk/keys.h>
 #include <input/processors.dtsi>
 
+/* Only the right half loads this file. crosses.keymap checks this macro to
+ * apply its right-half-only trackball settings (CPI 850). */
+#define CROSSES_RIGHT_HALF
+
 / {
     trackball_keybinds: trackball_keybinds {
         compatible = "zmk,input-processor-keybind";
@@ -16,12 +20,28 @@
     trackball_central_listener {
         sym_arrows {
             layers = <2>;              /* SYM (was 3 = QWERTY) */
-            input-processors = <&trackball_keybinds>;
+            /* 17/20 keeps arrow sensitivity at 850 CPI, like the pointer
+             * (this override skips the base processors). */
+            input-processors = <&zip_xy_scaler 17 20>, <&trackball_keybinds>;
             process-next;              /* go on to the override below */
         };
         sym_no_pointer {
             layers = <2>;
             input-processors = <&zip_xy_scaler 0 1>;  /* zero the movement so the pointer stays still */
+        };
+        prec_pointer {
+            layers = <6>;              /* PREC: 1/3 of 850 CPI, about 283 */
+            input-processors = <&zip_xy_scaler 1 3>;
+            process-next;              /* then the base 17/20 scaler and BLE rate limit */
+        };
+    };
+
+    /* Left ball (scroll). The left half already maps it to scroll at 1/2;
+     * layers aren't known there, so the PREC override lives on this half. */
+    trackball_peripheral_listener {
+        prec_scroll {
+            layers = <6>;              /* PREC: a further 1/2, so 1/4 overall */
+            input-processors = <&zip_scroll_scaler 1 2>;
         };
     };
 };

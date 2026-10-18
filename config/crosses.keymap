@@ -8,6 +8,8 @@
  *   3 = QWERTY  QWERTY alpha layer (toggle via SYM, pos 0)
  *   4 = FN      Function / media / BT / RGB / system (tri-layer NAV+SYM)
  *   5 = EXT     Extended / special keys (toggle via FN, &to EXT)
+ *   6 = PREC    Trackball precision (all &trans; NAV pos 30: hold = on while held,
+ *               double-tap = toggle)
  *
  * Home-row & top-row holds (BASE Colemak-DH):
  *   L (mods):   A=Ctrl  R=Alt  S=GUI  T=Shift (hsl)   G=ESC (hla)
@@ -33,6 +35,7 @@
 #define QWERTY 3
 #define FN     4
 #define EXT    5
+#define PREC   6
 
 #define LMODS  &kp LCTRL &kp LALT &kp LGUI &kp LSHFT
 #define EDIT   &kp K_UNDO &kp K_CUT &kp K_COPY &kp K_PASTE &kp K_REDO
@@ -209,6 +212,16 @@
             bindings = <&sl>, <&kp>;
         };
 
+        /* NAV pos 30 (under middle click): hold = precision while held
+         * (starts after 200 ms, or at once when another key is pressed),
+         * double-tap = toggle precision on/off. */
+        td_prec: tap_dance_precision {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&mo PREC>, <&tog PREC>;
+        };
+
         cw_caps: caps_word_tap_caps_hold {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -246,7 +259,7 @@
             bindings = <
 &kp F12     &kp F1      &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp F11
 &trans      &kp N1      &kp N2      &kp N3      &mkp LCLK   &mkp RCLK   &mkp MCLK   &kp PG_UP   &kp PG_DN   &trans      &kp MINUS   &kp ASTRK
-&trans      &kp N4      &kp N5      &kp N6      &kp N0      &trans      &trans      &kp RSHFT   &kp RGUI    &kp RALT    &kp RCTRL   &kp PLUS
+&trans      &kp N4      &kp N5      &kp N6      &kp N0      &trans      &td_prec    &kp RSHFT   &kp RGUI    &kp RALT    &kp RCTRL   &kp PLUS
 &trans      &kp N7      &kp N8      &kp N9      &trans      &kp LC(C)   &kp LC(D)   &kp ENTER   &trans      &trans      &trans      &trans
                                     &trans   &trans      &trans      &trans      &kp DOT     &kp COMMA
             >;
@@ -309,7 +322,39 @@
                                        &to BASE         &trans        &trans          &to BASE      &trans        &trans
             >;
         };
+
+        /* ==================================================================
+         * LAYER 6 — PREC (trackball precision)
+         *   All &trans, so keys behave as the layer below. The trackball
+         *   listeners in crosses_right.overlay slow the balls on this layer.
+         * ================================================================== */
+        prec_layer {
+            display-name = "PREC";
+            bindings = <
+&trans &trans &trans &trans &trans &trans  &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans  &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans  &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans  &trans &trans &trans &trans &trans &trans
+                     &trans &trans &trans  &trans &trans &trans
+            >;
+        };
     };
 };
+
+/* Right half only. CROSSES_RIGHT_HALF is defined in config/crosses_right.overlay,
+ * which only the right half loads. The shield sets the sensor CPI and the
+ * listener's base processors after that overlay, so they are overridden here:
+ * the keymap loads after the shield. */
+#ifdef CROSSES_RIGHT_HALF
+&trackball_central {
+    /* The PMW3610 only takes 200-CPI steps (850 would round down to 800),
+     * so 850 is made from 1000 CPI x 17/20 below. */
+    cpi = <1000>;
+};
+
+&trackball_central_listener {
+    input-processors = <&zip_xy_scaler 17 20>, <&zip_ble_report_rate_limit>;
+};
+#endif
 
 
