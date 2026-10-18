@@ -3,16 +3,25 @@
 
 / {
     trackball_keybinds: trackball_keybinds {
-        compatible = "zettaface,input-processor-keybind";
+        compatible = "zmk,input-processor-keybind";
         #input-processor-cells = <0>;
         mode = <1>;
-        bindings = <&kp UP>, <&kp DOWN>, <&kp LEFT>, <&kp RIGHT>;
+        /* order fixed by the module: RIGHT, LEFT, DOWN, UP */
+        bindings = <&kp RIGHT>, <&kp LEFT>, <&kp DOWN>, <&kp UP>;
     };
 
-    trackball_listener {
-        raise_arrow_layer {
-            layers = <3>; /* SYM layer is now layer 3 */
+    /* This overlay loads before the shield's crosses.dtsi, so the
+     * &trackball_central_listener label doesn't exist yet. Naming the node
+     * by path lets dtc merge it with the shield's definition later. */
+    trackball_central_listener {
+        sym_arrows {
+            layers = <2>;              /* SYM (was 3 = QWERTY) */
             input-processors = <&trackball_keybinds>;
+            process-next;              /* go on to the override below */
+        };
+        sym_no_pointer {
+            layers = <2>;
+            input-processors = <&zip_xy_scaler 0 1>;  /* zero the movement so the pointer stays still */
         };
     };
 };

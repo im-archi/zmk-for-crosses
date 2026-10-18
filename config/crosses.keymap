@@ -68,7 +68,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <220>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&sk>, <&kp>;
@@ -79,8 +79,6 @@
                 30 31 32 33 34 35
                 42 43 44 45 46 47
                 51 52 53
-                /* Other left-hand HRM keys — chord together */
-                25 26 27 28
             >;
             hold-trigger-on-release;
         };
@@ -90,9 +88,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <220>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
-            require-prior-idle-ms = <0>;
+            require-prior-idle-ms = <150>;
             bindings = <&sk>, <&kp>;
             hold-trigger-key-positions = <
                 /* Full right hand */
@@ -101,8 +99,6 @@
                 30 31 32 33 34 35
                 42 43 44 45 46 47
                 51 52 53
-                /* Other left-hand HRM keys — chord together */
-                25 26 27 28
             >;
             hold-trigger-on-release;
         };
@@ -112,7 +108,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <220>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&sk>, <&kp>;
@@ -123,8 +119,6 @@
                 24 25 26 27 28 29
                 36 37 38 39 40 41
                 48 49 50
-                /* Other right-hand HRM keys — chord together */
-                31 32 33 34
             >;
             hold-trigger-on-release;
         };
@@ -134,9 +128,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <220>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
-            require-prior-idle-ms = <0>;
+            require-prior-idle-ms = <150>;
             bindings = <&sk>, <&kp>;
             hold-trigger-key-positions = <
                 /* Full left hand */
@@ -145,8 +139,6 @@
                 24 25 26 27 28 29
                 36 37 38 39 40 41
                 48 49 50
-                /* Other right-hand HRM keys — chord together */
-                31 32 33 34
             >;
             hold-trigger-on-release;
         };
@@ -155,7 +147,7 @@
         hra: home_row_arrow {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "tap-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
@@ -174,10 +166,10 @@
         hla: home_left_arrow {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "tap-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <175>;
-            require-prior-idle-ms = <0>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <
                 6  7  8  9  10 11
@@ -210,10 +202,10 @@
         kp_slh: kp_tap_sticky_layer_hold {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <150>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
             quick-tap-ms = <120>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&sl>, <&kp>;
         };
 
